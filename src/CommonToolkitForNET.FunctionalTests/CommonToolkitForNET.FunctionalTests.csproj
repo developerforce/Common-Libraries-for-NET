@@ -66,4 +66,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="BeforeTeamCity">
+    <Copy SourceFiles="c:\temp\ForceSDKforNet.FunctionalTests.dll.config" DestinationFolder="$(TargetDir)" />
+  </Target>
 </Project>
