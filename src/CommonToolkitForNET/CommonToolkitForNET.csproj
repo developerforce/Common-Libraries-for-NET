@@ -42,6 +42,7 @@
     <Compile Include="Models\AuthToken.cs" />
     <Compile Include="Models\ErrorResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ToolkitHttpClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Threading.Tasks">
