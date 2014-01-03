@@ -17,13 +17,21 @@ namespace CommonToolkitForNET
         private readonly string _apiVersion;
         private readonly string _userAgent;
         private readonly string _accessToken;
+        public ToolkitHttpClient(string instanceUrl, string apiVersion, string accessToken)
+        {
+            _instanceUrl = instanceUrl;
+            _apiVersion = apiVersion;
+            _accessToken = accessToken;
+            _userAgent = "common-toolkit-dotnet";
+
+        }
 
         public ToolkitHttpClient(string instanceUrl, string apiVersion, string accessToken, string userAgent)
         {
             _instanceUrl = instanceUrl;
             _apiVersion = apiVersion;
-            _userAgent = userAgent;
             _accessToken = accessToken;
+            _userAgent = userAgent;
         }
 
         public async Task<T> HttpGet<T>(string urlSuffix)
@@ -32,7 +40,7 @@ namespace CommonToolkitForNET
 
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, _apiVersion));
+                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/" , _apiVersion));
 
                 var request = new HttpRequestMessage()
                 {
@@ -68,7 +76,7 @@ namespace CommonToolkitForNET
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, _apiVersion));
 
-                var json = JsonConvert.SerializeObject(inputObject);
+                var json = JsonConvert.SerializeObject(inputObject, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var responseMessage = await client.PostAsync(url, content);
