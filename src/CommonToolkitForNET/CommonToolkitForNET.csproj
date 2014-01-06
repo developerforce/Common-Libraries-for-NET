@@ -39,6 +39,8 @@
     <Compile Include="Common.cs" />
     <Compile Include="ForceException.cs" />
     <Compile Include="IAuthClient.cs" />
+    <Compile Include="IForceException.cs" />
+    <Compile Include="IToolkitHttpClient.cs" />
     <Compile Include="Models\AuthToken.cs" />
     <Compile Include="Models\ErrorResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

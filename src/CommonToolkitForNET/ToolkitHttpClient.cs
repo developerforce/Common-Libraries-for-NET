@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace CommonToolkitForNET
 {
-    public class ToolkitHttpClient
+    public class ToolkitHttpClient : IToolkitHttpClient
     {
         private readonly string _instanceUrl;
         private readonly string _apiVersion;

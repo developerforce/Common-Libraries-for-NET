@@ -19,7 +19,7 @@ namespace CommonToolkitForNET
     //500	An error has occurred within Force.com, so the request couldn’t be completed. Contact salesforce.com Customer Support.
 
 
-    public class ForceException : Exception
+    public class ForceException : Exception, IForceException
     {
         public ForceException(string error, string description)
             : base(description)
