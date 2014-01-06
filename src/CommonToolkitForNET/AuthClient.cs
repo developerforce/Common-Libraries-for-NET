@@ -20,24 +20,24 @@ namespace CommonToolkitForNET
             ApiVersion = "v29.0";
         }
 
-        public AuthClient(string clientId, string clientSecret, string username, string password)
+        public AuthClient(string clientId, string clientSecret, string username, string password, string userAgent)
             : this()
         {
-            Authenticate(clientId, clientSecret, username, password).Wait();
+            Authenticate(clientId, clientSecret, username, password, userAgent).Wait();
         }
 
-        public async Task Authenticate(string clientId, string clientSecret, string username, string password)
+        public async Task Authenticate(string clientId, string clientSecret, string username, string password, string userAgent)
         {
-            var tokenRequestEndpointUrl = "https://login.salesforce.com/services/oauth2/token";
+            const string tokenRequestEndpointUrl = "https://login.salesforce.com/services/oauth2/token";
 
-            await Authenticate(clientId, clientSecret, username, password, tokenRequestEndpointUrl);
+            await Authenticate(clientId, clientSecret, username, password, userAgent, tokenRequestEndpointUrl);
         }
 
-        public async Task Authenticate(string clientId, string clientSecret, string username, string password, string tokenRequestEndpointUrl)
+        public async Task Authenticate(string clientId, string clientSecret, string username, string password, string userAgent, string tokenRequestEndpointUrl)
         {
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Format("salesforce-toolkit-dotnet/{0}", ApiVersion));
+                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(userAgent, "/", ApiVersion));
 
                 var content = new FormUrlEncodedContent(new[]
                 {
