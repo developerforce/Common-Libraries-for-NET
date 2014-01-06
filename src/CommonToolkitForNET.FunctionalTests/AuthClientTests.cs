@@ -27,8 +27,10 @@ namespace CommonToolkitForNET.FunctionalTests
         [Test]
         public async void Auth_ValidCreds_HasAccessToken()
         {
+            const string userAgent = "common-toolkit-dotnet";
+
             var auth = new AuthClient();
-            await auth.Authenticate(_consumerKey, _consumerSecret, _username, _password, _tokenRequestEndpointUrl);
+            await auth.Authenticate(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
 
             Assert.IsNotNullOrEmpty(auth.AccessToken);
         }
@@ -36,8 +38,10 @@ namespace CommonToolkitForNET.FunctionalTests
         [Test]
         public async void Auth_ValidCreds_HasInstanceUrl()
         {
+            const string userAgent = "common-toolkit-dotnet";
+
             var auth = new AuthClient();
-            await auth.Authenticate(_consumerKey, _consumerSecret, _username, _password, _tokenRequestEndpointUrl);
+            await auth.Authenticate(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
 
             Assert.IsNotNullOrEmpty(auth.InstanceUrl);
         }
