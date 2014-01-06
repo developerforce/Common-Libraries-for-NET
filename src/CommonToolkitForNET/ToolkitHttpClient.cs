@@ -125,5 +125,65 @@ namespace CommonToolkitForNET
                 throw new ForceException(errorResponse.message, errorResponse.errorCode);
             }
         }
+
+        public async Task<bool> HttpPatch(object inputObject, string urlSuffix)
+        {
+            var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
+
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, _apiVersion));
+
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri(url),
+                    Method = new HttpMethod("PATCH")
+                };
+
+                var json = JsonConvert.SerializeObject(inputObject);
+                request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var responseMessage = await client.SendAsync(request);
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+
+                var response = await responseMessage.Content.ReadAsStringAsync();
+                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
+                throw new ForceException(errorResponse.error, errorResponse.error_description);
+            }
+        }
+        public async Task<bool> HttpDelete(string urlSuffix)
+        {
+            var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
+
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, _apiVersion));
+
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri(url),
+                    Method = HttpMethod.Delete
+                };
+
+                var responseMessage = await client.SendAsync(request);
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+
+                var response = await responseMessage.Content.ReadAsStringAsync();
+                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
+                throw new ForceException(errorResponse.error, errorResponse.error_description);
+            }
+        }
     }
 }
