@@ -18,10 +18,7 @@ namespace CommonToolkitForNET
         private readonly string _userAgent;
         private readonly string _accessToken;
 
-        private Func<HttpClient> _builder;
-
-        public HttpResponseMessage HttpResponseMessage;
-        public HttpRequestMessage HttpRequestMessage;
+        private readonly Func<HttpClient> _builder;
 
         public ToolkitHttpClient(string instanceUrl, string apiVersion, string accessToken)
         {
@@ -49,11 +46,8 @@ namespace CommonToolkitForNET
             _apiVersion = apiVersion;
             _accessToken = accessToken;
             _userAgent = userAgent;
-        }
 
-        public string GetUserAgent()
-        {
-            return string.Concat(_userAgent, "/", _apiVersion);
+            _builder = () => new HttpClient();
         }
 
         public async Task<T> HttpGet<T>(string urlSuffix)
@@ -62,7 +56,7 @@ namespace CommonToolkitForNET
 
             using (var client = _builder())
             {
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(GetUserAgent());
+                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
 
                 var request = new HttpRequestMessage()
                 {
@@ -72,11 +66,7 @@ namespace CommonToolkitForNET
 
                 request.Headers.Add("Authorization", "Bearer " + _accessToken);
 
-                this.HttpRequestMessage = request;
-
                 var responseMessage = await client.SendAsync(request);
-                this.HttpResponseMessage = responseMessage;
-
                 var response = await responseMessage.Content.ReadAsStringAsync();
 
                 if (responseMessage.IsSuccessStatusCode)
@@ -96,7 +86,7 @@ namespace CommonToolkitForNET
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = new HttpClient())
+            using (var client = _builder())
             {
                 client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
 
@@ -129,11 +119,11 @@ namespace CommonToolkitForNET
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = new HttpClient())
+            using (var client = _builder())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, _apiVersion));
+                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
 
                 var json = JsonConvert.SerializeObject(inputObject, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -156,11 +146,11 @@ namespace CommonToolkitForNET
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = new HttpClient())
+            using (var client = _builder())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, _apiVersion));
+                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
 
                 var request = new HttpRequestMessage()
                 {
@@ -187,11 +177,11 @@ namespace CommonToolkitForNET
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = new HttpClient())
+            using (var client = _builder())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, _apiVersion));
+                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
 
                 var request = new HttpRequestMessage()
                 {
