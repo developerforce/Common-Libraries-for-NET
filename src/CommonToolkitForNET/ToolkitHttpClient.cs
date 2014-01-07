@@ -17,6 +17,12 @@ namespace CommonToolkitForNET
         private readonly string _apiVersion;
         private readonly string _userAgent;
         private readonly string _accessToken;
+
+        private Func<HttpClient> _builder;
+
+        public HttpResponseMessage HttpResponseMessage;
+        public HttpRequestMessage HttpRequestMessage;
+
         public ToolkitHttpClient(string instanceUrl, string apiVersion, string accessToken)
         {
             _instanceUrl = instanceUrl;
@@ -24,6 +30,17 @@ namespace CommonToolkitForNET
             _accessToken = accessToken;
             _userAgent = "common-toolkit-dotnet";
 
+            _builder = () => new HttpClient();
+        }
+
+        public ToolkitHttpClient(string instanceUrl, string apiVersion, string accessToken, Func<HttpClient> builder )
+        {
+            _instanceUrl = instanceUrl;
+            _apiVersion = apiVersion;
+            _accessToken = accessToken;
+            _userAgent = "common-toolkit-dotnet";
+
+            _builder = builder;
         }
 
         public ToolkitHttpClient(string instanceUrl, string apiVersion, string accessToken, string userAgent)
@@ -34,13 +51,18 @@ namespace CommonToolkitForNET
             _userAgent = userAgent;
         }
 
+        public string GetUserAgent()
+        {
+            return string.Concat(_userAgent, "/", _apiVersion);
+        }
+
         public async Task<T> HttpGet<T>(string urlSuffix)
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = new HttpClient())
+            using (var client = _builder())
             {
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/" , _apiVersion));
+                client.DefaultRequestHeaders.UserAgent.ParseAdd(GetUserAgent());
 
                 var request = new HttpRequestMessage()
                 {
@@ -50,7 +72,11 @@ namespace CommonToolkitForNET
 
                 request.Headers.Add("Authorization", "Bearer " + _accessToken);
 
+                this.HttpRequestMessage = request;
+
                 var responseMessage = await client.SendAsync(request);
+                this.HttpResponseMessage = responseMessage;
+
                 var response = await responseMessage.Content.ReadAsStringAsync();
 
                 if (responseMessage.IsSuccessStatusCode)
