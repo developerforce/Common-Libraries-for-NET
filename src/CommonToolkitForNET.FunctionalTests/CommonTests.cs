@@ -25,7 +25,7 @@ namespace CommonToolkitForNET.FunctionalTests
             const string userAgent = "common-toolkit-dotnet";
 
             var auth = new AuthClient();
-            await auth.Authenticate(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
+            await auth.AuthenticatePassword(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
 
             Assert.IsNotNullOrEmpty(auth.AccessToken);
         }
@@ -36,7 +36,7 @@ namespace CommonToolkitForNET.FunctionalTests
             const string userAgent = "common-toolkit-dotnet";
 
             var auth = new AuthClient();
-            await auth.Authenticate(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
+            await auth.AuthenticatePassword(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
 
             Assert.IsNotNullOrEmpty(auth.InstanceUrl);
         }

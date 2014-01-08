@@ -11,7 +11,7 @@ namespace CommonToolkitForNET
         string InstanceUrl { get; set; }
         string AccessToken { get; set; }
         string ApiVersion { get; set; }
-        Task Authenticate(string clientId, string clientSecret, string username, string password, string userAgent);
-        Task Authenticate(string clientId, string clientSecret, string username, string password, string userAgent, string tokenRequestEndpointUrl);
+        Task AuthenticatePassword(string clientId, string clientSecret, string username, string password, string userAgent);
+        Task AuthenticatePassword(string clientId, string clientSecret, string username, string password, string userAgent, string tokenRequestEndpointUrl);
     }
 }
