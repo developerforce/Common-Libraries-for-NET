@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using CommonToolkitForNET.Models;
+using Salesforce.Common.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace CommonToolkitForNET
+namespace Salesforce.Common
 {
-    public class ToolkitHttpClient : IToolkitHttpClient
+    public class SalesforceHttpClient : ISalesforceHttpClient
     {
         private readonly string _instanceUrl;
         private readonly string _apiVersion;
@@ -20,27 +18,27 @@ namespace CommonToolkitForNET
 
         private readonly Func<HttpClient> _builder;
 
-        public ToolkitHttpClient(string instanceUrl, string apiVersion, string accessToken)
+        public SalesforceHttpClient(string instanceUrl, string apiVersion, string accessToken)
         {
             _instanceUrl = instanceUrl;
             _apiVersion = apiVersion;
             _accessToken = accessToken;
-            _userAgent = "common-toolkit-dotnet";
+            _userAgent = "common-libraries-dotnet";
 
             _builder = () => new HttpClient();
         }
 
-        public ToolkitHttpClient(string instanceUrl, string apiVersion, string accessToken, Func<HttpClient> builder )
+        public SalesforceHttpClient(string instanceUrl, string apiVersion, string accessToken, Func<HttpClient> builder )
         {
             _instanceUrl = instanceUrl;
             _apiVersion = apiVersion;
             _accessToken = accessToken;
-            _userAgent = "common-toolkit-dotnet";
+            _userAgent = "common-libraries-dotnet";
 
             _builder = builder;
         }
 
-        public ToolkitHttpClient(string instanceUrl, string apiVersion, string accessToken, string userAgent)
+        public SalesforceHttpClient(string instanceUrl, string apiVersion, string accessToken, string userAgent)
         {
             _instanceUrl = instanceUrl;
             _apiVersion = apiVersion;

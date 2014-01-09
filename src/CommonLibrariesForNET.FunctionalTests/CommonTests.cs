@@ -1,7 +1,8 @@
 ﻿using System.Configuration;
 using NUnit.Framework;
+using Salesforce.Common;
 
-namespace CommonToolkitForNET.FunctionalTests
+namespace Salesforce.Common.FunctionalTests
 {
     public class CommonTests
     {
@@ -22,7 +23,7 @@ namespace CommonToolkitForNET.FunctionalTests
         [Test]
         public async void Auth_ValidCreds_HasAccessToken()
         {
-            const string userAgent = "common-toolkit-dotnet";
+            const string userAgent = "common-libraries-dotnet";
 
             var auth = new AuthClient();
             await auth.AuthenticatePassword(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
@@ -33,7 +34,7 @@ namespace CommonToolkitForNET.FunctionalTests
         [Test]
         public async void Auth_ValidCreds_HasInstanceUrl()
         {
-            const string userAgent = "common-toolkit-dotnet";
+            const string userAgent = "common-libraries-dotnet";
 
             var auth = new AuthClient();
             await auth.AuthenticatePassword(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CommonToolkitForNET.FunctionalTests")]
+[assembly: AssemblyTitle("Salesforce.Common.UnitTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CommonToolkitForNET.FunctionalTests")]
+[assembly: AssemblyProduct("Salesforce.Common.UnitTests")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("111e59bb-dc70-46c0-9452-3b79387e92d8")]
+[assembly: Guid("1b7b7568-2a44-45ff-9465-47a4a94d1c0a")]
 
 // Version information for an assembly consists of the following four values:
 //

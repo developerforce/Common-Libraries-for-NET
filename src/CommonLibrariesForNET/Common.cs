@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CommonToolkitForNET
+namespace Salesforce.Common
 {
     public static class Common
     {

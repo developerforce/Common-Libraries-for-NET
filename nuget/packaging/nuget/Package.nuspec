@@ -1,18 +1,19 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>developerforce.common</id>
+    <id>DeveloperForce.Common</id>
+    <title>DeveloperForce.Common</title>
     <version>$version$</version>
-    <authors>developerforce</authors>
-    <owners></owners>
-    <licenseUrl>https://raw.github.com/developerforce/Common-Toolkit-for-NET/master/LICENSE</licenseUrl>
-    <projectUrl>https://raw.github.com/developerforce/Common-Toolkit-for-NET/</projectUrl>
-    <iconUrl>https://raw.github.com/developerforce/Common-Toolkit-for-NET/master/nuget/packaging/avatar.jpg</iconUrl>
+    <authors>developerforce,wadewegner</authors>
+    <owners>developerforce,wadewegner</owners>
+    <licenseUrl>https://raw.github.com/developerforce/Common-Libraries-for-NET/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/developerforce/Common-Libraries-for-NET/</projectUrl>
+    <iconUrl>https://raw.github.com/developerforce/Common-Libraries-for-NET/master/nuget/packaging/avatar.jpg</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>The developerforce.common NuGet provides a .NET library for interacting with Salesforce's auth APIs and other common functionality.</description>
+    <description>The DeveloperForce.Common NuGet provides a .NET library for interacting with Salesforce's auth APIs and other common functionality.</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright 2013</copyright>
-    <tags>salesforce forcedotcom rest api</tags>
+    <copyright>Copyright 2014</copyright>
+    <tags>salesforce forcedotcom chatter rest api oauth httpclient</tags>
     <dependencies>
       <dependency id="Microsoft.Bcl" version="1.1.6" />
       <dependency id="Microsoft.Bcl.Async" version="1.0.165" />
@@ -22,10 +23,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\src\CommonToolkitForNET\bin\Debug\CommonToolkitForNet.dll" target="lib" />
-    <file src="..\..\..\src\CommonToolkitForNET\bin\Debug\CommonToolkitForNet.pdb" target="lib" />
-    <file src="..\..\tools\Install.ps1" target="tools" />
-    <file src="..\..\..\src\CommonToolkitForNET\*.cs" target="src" />
-    <file src="..\..\..\src\CommonToolkitForNET\Models\*.cs" target="src" />
+    <file src="..\..\..\src\CommonLibrariesForNET\bin\Debug\Salesforce.Common.dll" target="lib" />
+    <file src="..\..\..\src\CommonLibrariesForNET\bin\Debug\Salesforce.Common.pdb" target="lib" />
+    <file src="..\..\..\src\CommonLibrariesForNET\*.cs" target="src" />
+    <file src="..\..\..\src\CommonLibrariesForNET\Models\*.cs" target="src" />
   </files>
 </package>

@@ -1,4 +1,4 @@
-﻿namespace CommonToolkitForNET.Models
+﻿namespace Salesforce.Common.Models
 {
     public class SuccessResponse
     {

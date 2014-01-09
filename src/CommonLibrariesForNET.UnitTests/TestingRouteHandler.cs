@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace CommonToolkitForNET.FunctionalTests
+namespace Salesforce.Common.UnitTests
 {
     internal class TestingRouteHandler : DelegatingHandler
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CommonToolkitForNET.Models
+namespace Salesforce.Common.Models
 {
     public class ErrorResponse
     {

@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 
-namespace CommonToolkitForNET
+namespace Salesforce.Common
 {
-    public interface IToolkitHttpClient
+    public interface ISalesforceHttpClient
     {
         Task<T> HttpGet<T>(string urlSuffix);
         Task<T> HttpGet<T>(string urlSuffix, string nodeName);

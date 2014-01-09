@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace CommonToolkitForNET
+namespace Salesforce.Common
 {
     public interface IForceException
     {

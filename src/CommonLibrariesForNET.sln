@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonToolkitForNET", "CommonToolkitForNET\CommonToolkitForNET.csproj", "{688BC3A2-29C2-48F7-BC28-7A81ABF5C3D3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLibrariesForNET", "CommonLibrariesForNET\CommonLibrariesForNET.csproj", "{688BC3A2-29C2-48F7-BC28-7A81ABF5C3D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonToolkitForNET.FunctionalTests", "CommonToolkitForNET.FunctionalTests\CommonToolkitForNET.FunctionalTests.csproj", "{2FF0F8C4-8604-460B-9698-42BDF6289066}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLibrariesForNET.FunctionalTests", "CommonLibrariesForNET.FunctionalTests\CommonLibrariesForNET.FunctionalTests.csproj", "{2FF0F8C4-8604-460B-9698-42BDF6289066}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{835590B9-825B-4B49-8CF4-69CF5F1C5376}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{835590
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonToolkitForNET.UnitTests", "CommonToolkitForNET.UnitTests\CommonToolkitForNET.UnitTests.csproj", "{A47AE957-E0FB-4407-B54E-44594594F616}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLibrariesForNET.UnitTests", "CommonLibrariesForNET.UnitTests\CommonLibrariesForNET.UnitTests.csproj", "{A47AE957-E0FB-4407-B54E-44594594F616}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
