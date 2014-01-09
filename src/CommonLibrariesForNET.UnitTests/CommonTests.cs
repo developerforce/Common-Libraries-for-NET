@@ -23,7 +23,7 @@ namespace Salesforce.Common.UnitTests
 
             Func<HttpClient> builder = () => client;
 
-            var httpClient = new SalesforceHttpClient("http://localhost:1899", "v29", "accessToken", builder);
+            var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", builder);
 
             await httpClient.HttpGet<object>("wade");
         }
@@ -44,7 +44,7 @@ namespace Salesforce.Common.UnitTests
 
             Func<HttpClient> builder = () => client;
 
-            var httpClient = new SalesforceHttpClient("http://localhost:1899", "v29", "accessToken", builder);
+            var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", builder);
             await httpClient.HttpGet<object>("wade", "node");
         }
 
@@ -64,7 +64,7 @@ namespace Salesforce.Common.UnitTests
 
             Func<HttpClient> builder = () => client;
 
-            var httpClient = new SalesforceHttpClient("http://localhost:1899", "v29", "accessToken", builder);
+            var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", builder);
             await httpClient.HttpPost<object>(null, "wade");
         }
 
@@ -84,7 +84,7 @@ namespace Salesforce.Common.UnitTests
 
             Func<HttpClient> builder = () => client;
 
-            var httpClient = new SalesforceHttpClient("http://localhost:1899", "v29", "accessToken", builder);
+            var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", builder);
             await httpClient.HttpPatch(null, "wade");
         }
 
@@ -104,7 +104,7 @@ namespace Salesforce.Common.UnitTests
 
             Func<HttpClient> builder = () => client;
 
-            var httpClient = new SalesforceHttpClient("http://localhost:1899", "v29", "accessToken", builder);
+            var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", builder);
             await httpClient.HttpDelete("wade");
         }
     }

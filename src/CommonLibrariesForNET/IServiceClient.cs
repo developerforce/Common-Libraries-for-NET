@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace Salesforce.Common
 {
-    public interface ISalesforceHttpClient
+    public interface IServiceHttpClient
     {
         Task<T> HttpGet<T>(string urlSuffix);
         Task<T> HttpGet<T>(string urlSuffix, string nodeName);

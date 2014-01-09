@@ -16,7 +16,7 @@ namespace Salesforce.Common.FunctionalTests
         [Test]
         public async void Auth_ValidCreds_HasApiVersion()
         {
-            var auth = new AuthClient();
+            var auth = new AuthenticationClient();
             Assert.IsNotNullOrEmpty(auth.ApiVersion);
         }
 
@@ -25,8 +25,8 @@ namespace Salesforce.Common.FunctionalTests
         {
             const string userAgent = "common-libraries-dotnet";
 
-            var auth = new AuthClient();
-            await auth.AuthenticatePassword(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
+            var auth = new AuthenticationClient();
+            await auth.UsernamePassword(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
 
             Assert.IsNotNullOrEmpty(auth.AccessToken);
         }
@@ -36,8 +36,8 @@ namespace Salesforce.Common.FunctionalTests
         {
             const string userAgent = "common-libraries-dotnet";
 
-            var auth = new AuthClient();
-            await auth.AuthenticatePassword(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
+            var auth = new AuthenticationClient();
+            await auth.UsernamePassword(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
 
             Assert.IsNotNullOrEmpty(auth.InstanceUrl);
         }

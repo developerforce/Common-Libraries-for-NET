@@ -7,25 +7,30 @@ using Newtonsoft.Json;
 
 namespace Salesforce.Common
 {
-    public class AuthClient : IAuthClient
+    public class AuthenticationClient : IAuthenticationClient
     {
         public string InstanceUrl { get; set; }
         public string AccessToken { get; set; }
         public string ApiVersion { get; set; }
+        private const string UserAgent = "common-libraries-dotnet";
+        private const string TokenRequestEndpointUrl = "https://login.salesforce.com/services/oauth2/token";
         
-        public AuthClient()
+        public AuthenticationClient()
         {
             ApiVersion = "v29.0";
         }
 
-        public async Task AuthenticatePassword(string clientId, string clientSecret, string username, string password, string userAgent)
+        public async Task UsernamePassword(string clientId, string clientSecret, string username, string password)
         {
-            const string tokenRequestEndpointUrl = "https://login.salesforce.com/services/oauth2/token";
-
-            await AuthenticatePassword(clientId, clientSecret, username, password, userAgent, tokenRequestEndpointUrl);
+            await UsernamePassword(clientId, clientSecret, username, password, UserAgent, TokenRequestEndpointUrl);
         }
 
-        public async Task AuthenticatePassword(string clientId, string clientSecret, string username, string password, string userAgent, string tokenRequestEndpointUrl)
+        public async Task UsernamePassword(string clientId, string clientSecret, string username, string password, string userAgent)
+        {
+            await UsernamePassword(clientId, clientSecret, username, password, userAgent, TokenRequestEndpointUrl);
+        }
+
+        public async Task UsernamePassword(string clientId, string clientSecret, string username, string password, string userAgent, string tokenRequestEndpointUrl)
         {
             using (var client = new HttpClient())
             {
@@ -65,14 +70,18 @@ namespace Salesforce.Common
             }
         }
 
-        public async Task AuthenticateAuthorizationCode(string clientId, string clientSecret, string redirectUri, string code,string userAgent)
+        public async Task WebServer(string clientId, string clientSecret, string redirectUri, string code)
         {
-            const string tokenRequestEndpointUrl = "https://login.salesforce.com/services/oauth2/token";
 
-            await AuthenticateAuthorizationCode(clientId, clientSecret, redirectUri, code, userAgent, tokenRequestEndpointUrl);
+            await WebServer(clientId, clientSecret, redirectUri, code, UserAgent, TokenRequestEndpointUrl);
         }
 
-        public async Task AuthenticateAuthorizationCode(string clientId, string clientSecret, string redirectUri, string code, string userAgent, string tokenRequestEndpointUrl)
+        public async Task WebServer(string clientId, string clientSecret, string redirectUri, string code, string userAgent)
+        {
+            await WebServer(clientId, clientSecret, redirectUri, code, userAgent, TokenRequestEndpointUrl);
+        }
+
+        public async Task WebServer(string clientId, string clientSecret, string redirectUri, string code, string userAgent, string tokenRequestEndpointUrl)
         {
             using (var client = new HttpClient())
             {

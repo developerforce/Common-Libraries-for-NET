@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Salesforce.Common
 {
-    public class SalesforceHttpClient : ISalesforceHttpClient
+    public class ServiceHttpClient : IServiceHttpClient
     {
         private readonly string _instanceUrl;
         private readonly string _apiVersion;
@@ -18,7 +18,7 @@ namespace Salesforce.Common
 
         private readonly Func<HttpClient> _builder;
 
-        public SalesforceHttpClient(string instanceUrl, string apiVersion, string accessToken)
+        public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken)
         {
             _instanceUrl = instanceUrl;
             _apiVersion = apiVersion;
@@ -28,7 +28,7 @@ namespace Salesforce.Common
             _builder = () => new HttpClient();
         }
 
-        public SalesforceHttpClient(string instanceUrl, string apiVersion, string accessToken, Func<HttpClient> builder )
+        public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, Func<HttpClient> builder )
         {
             _instanceUrl = instanceUrl;
             _apiVersion = apiVersion;
@@ -38,7 +38,7 @@ namespace Salesforce.Common
             _builder = builder;
         }
 
-        public SalesforceHttpClient(string instanceUrl, string apiVersion, string accessToken, string userAgent)
+        public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, string userAgent)
         {
             _instanceUrl = instanceUrl;
             _apiVersion = apiVersion;
