@@ -1,4 +1,4 @@
-# Common Libraries for .NET <img src="http://dfbuild.cloudapp.net/app/rest/builds/buildType:CommonLibraryForNet_DebugCiBuild/statusIcon" />
+# Common Libraries for .NET <img src="http://dfbuild.cloudapp.net/app/rest/builds/buildType:CommonLibrariesForNet/statusIcon" />
 
 The Common Libraries for .NET provides functionality used by the [Force.com Toolkit for .NET](https://github.com/developerforce/Force.com-Toolkit-for-NET) and the [Chatter Toolkit for .NET](https://github.com/developerforce/Chatter-Toolkit-for-NET). While you can use the Common Libraries for .NET indepdently, it is recommended that you use it through one of the toolkits.
 
