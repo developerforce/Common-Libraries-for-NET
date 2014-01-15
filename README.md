@@ -1,6 +1,6 @@
 # Common Libraries for .NET <img src="http://dfbuild.cloudapp.net/app/rest/builds/buildType:CommonLibrariesForNet_DebugCiBuild/statusIcon" />
 
-The Common Libraries for .NET provides functionality used by the [Force.com Toolkit for .NET](https://github.com/developerforce/Force.com-Toolkit-for-NET) and the [Chatter Toolkit for .NET](https://github.com/developerforce/Chatter-Toolkit-for-NET). While you can use the Common Libraries for .NET indepdently, it is recommended that you use it through one of the toolkits.
+The Common Libraries for .NET provides functionality used by the [Force.com Toolkit for .NET](https://github.com/developerforce/Force.com-Toolkit-for-NET) and the [Chatter Toolkit for .NET](https://github.com/developerforce/Chatter-Toolkit-for-NET). While you can use the Common Libraries for .NET independently, it is recommended that you use it through one of the toolkits.
 
 These libraries were built using the [Async/Await pattern](http://msdn.microsoft.com/en-us/library/hh191443.aspx) for asynchronous development and .NET [portable class libraries](http://msdn.microsoft.com/en-us/library/gg597391.aspx), making it easy to target multiple Microsoft platforms, including .NET 4/4.5, Windows Phone8, Windows 8/8.1, and Silverlight 5.
 
