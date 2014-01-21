@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
-using System.Runtime.Remoting.Channels;
 using NUnit.Framework;
 
 namespace Salesforce.Common.UnitTests
@@ -9,7 +7,7 @@ namespace Salesforce.Common.UnitTests
     public class CommonTests
     {
         [Test]
-        public async void Auth_CheckHttpRequestMessage_HttpGet()
+        public async void Requests_CheckHttpRequestMessage_HttpGet()
         {
             var client = new HttpClient(new TestingRouteHandler(r =>
             {
@@ -22,13 +20,14 @@ namespace Salesforce.Common.UnitTests
                 Assert.AreEqual(r.Headers.Authorization.ToString(), "Bearer accessToken");
             }));
 
-            var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client);
-
-            await httpClient.HttpGet<object>("wade");
+            using (var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client))
+            {
+                await httpClient.HttpGet<object>("wade");
+            }
         }
 
         [Test]
-        public async void Auth_CheckHttpRequestMessage_HttpGet_WithNode()
+        public async void Requests_CheckHttpRequestMessage_HttpGet_WithNode()
         {
             var client = new HttpClient(new TestingRouteHandler(r =>
             {
@@ -41,12 +40,14 @@ namespace Salesforce.Common.UnitTests
                 Assert.AreEqual(r.Headers.Authorization.ToString(), "Bearer accessToken");
             }));
 
-            var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client);
-            await httpClient.HttpGet<object>("wade", "node");
+            using (var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client))
+            {
+                await httpClient.HttpGet<object>("wade", "node");
+            }
         }
 
         [Test]
-        public async void Auth_CheckHttpRequestMessage_HttpPost()
+        public async void Requests_CheckHttpRequestMessage_HttpPost()
         {
             var client = new HttpClient(new TestingRouteHandler(r =>
             {
@@ -59,12 +60,14 @@ namespace Salesforce.Common.UnitTests
                 Assert.AreEqual(r.Headers.Authorization.ToString(), "Bearer accessToken");
             }));
 
-            var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client);
-            await httpClient.HttpPost<object>(null, "wade");
+            using (var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client))
+            {
+                await httpClient.HttpPost<object>(null, "wade");
+            }
         }
 
         [Test]
-        public async void Auth_CheckHttpRequestMessage_HttpPatch()
+        public async void Requests_CheckHttpRequestMessage_HttpPatch()
         {
             var client = new HttpClient(new TestingRouteHandler(r =>
             {
@@ -77,12 +80,14 @@ namespace Salesforce.Common.UnitTests
                 Assert.AreEqual(r.Headers.Authorization.ToString(), "Bearer accessToken");
             }));
 
-            var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client);
-            await httpClient.HttpPatch(null, "wade");
+            using (var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client))
+            {
+                await httpClient.HttpPatch(null, "wade");
+            }
         }
 
         [Test]
-        public async void Auth_CheckHttpRequestMessage_HttpDelete()
+        public async void Requests_CheckHttpRequestMessage_HttpDelete()
         {
             var client = new HttpClient(new TestingRouteHandler(r =>
             {
@@ -95,12 +100,14 @@ namespace Salesforce.Common.UnitTests
                 Assert.AreEqual(r.Headers.Authorization.ToString(), "Bearer accessToken");
             }));
 
-            var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client);
-            await httpClient.HttpDelete("wade");
+            using (var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client))
+            {
+                await httpClient.HttpDelete("wade");
+            }
         }
 
         [Test]
-        public async void Requests_CheckAddedRequestsHeaders()
+        public async void Requests_CheckCustomRequestsHeaders()
         {
             var client = new HttpClient(new TestingRouteHandler(r =>
             {
@@ -108,10 +115,12 @@ namespace Salesforce.Common.UnitTests
                 Assert.AreEqual(r.Headers.GetValues("headername").FirstOrDefault(), "headervalue");
             }));
 
-            client.DefaultRequestHeaders.Add("headername","headervalue");
+            client.DefaultRequestHeaders.Add("headername", "headervalue");
 
-            var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client);
-            await httpClient.HttpGet<object>("wade", "node");
+            using (var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client))
+            {
+                await httpClient.HttpGet<object>("wade", "node");
+            }
         }
     }
 }

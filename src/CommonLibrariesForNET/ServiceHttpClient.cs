@@ -9,14 +9,13 @@ using Newtonsoft.Json.Linq;
 
 namespace Salesforce.Common
 {
-    public class ServiceHttpClient : IServiceHttpClient
+    public class ServiceHttpClient : IServiceHttpClient, IDisposable
     {
         private readonly string _instanceUrl;
         private readonly string _apiVersion;
-        private readonly string _userAgent = "common-libraries-dotnet";
+        private static string _userAgent = "common-libraries-dotnet";
         private readonly string _accessToken;
-
-        private readonly HttpClient _httpClient;
+        private static HttpClient _httpClient;
 
         public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken)
         {
@@ -32,8 +31,7 @@ namespace Salesforce.Common
             _instanceUrl = instanceUrl;
             _apiVersion = apiVersion;
             _accessToken = accessToken;
-
-            _httpClient =  httpClient;   
+            _httpClient = httpClient;
         }
 
         public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, string userAgent)
@@ -46,165 +44,156 @@ namespace Salesforce.Common
             _httpClient = new HttpClient();
         }
 
-
         public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, string userAgent, HttpClient httpClient)
         {
             _instanceUrl = instanceUrl;
             _apiVersion = apiVersion;
             _accessToken = accessToken;
             _userAgent = userAgent;
+            _httpClient = httpClient;
+        }
+
+        public void Dispose()
+        {
+            _httpClient.Dispose();
         }
 
         public async Task<T> HttpGet<T>(string urlSuffix)
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = _httpClient)
+            _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
+
+            var request = new HttpRequestMessage()
             {
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
+                RequestUri = new Uri(url),
+                Method = HttpMethod.Get
+            };
 
-                var request = new HttpRequestMessage()
-                {
-                    RequestUri = new Uri(url),
-                    Method = HttpMethod.Get
-                };
+            request.Headers.Add("Authorization", "Bearer " + _accessToken);
 
-                request.Headers.Add("Authorization", "Bearer " + _accessToken);
+            var responseMessage = await _httpClient.SendAsync(request);
+            var response = await responseMessage.Content.ReadAsStringAsync();
 
-                var responseMessage = await client.SendAsync(request);
-                var response = await responseMessage.Content.ReadAsStringAsync();
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jObject = JObject.Parse(response);
 
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var jObject = JObject.Parse(response);
-
-                    var r = JsonConvert.DeserializeObject<T>(jObject.ToString());
-                    return r;
-                }
-
-                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
-                throw new ForceException(errorResponse.errorCode, errorResponse.message);
+                var r = JsonConvert.DeserializeObject<T>(jObject.ToString());
+                return r;
             }
+
+            var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
+            throw new ForceException(errorResponse.errorCode, errorResponse.message);
         }
 
         public async Task<T> HttpGet<T>(string urlSuffix, string nodeName)
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = _httpClient)
+            _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
+
+            var request = new HttpRequestMessage()
             {
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
+                RequestUri = new Uri(url),
+                Method = HttpMethod.Get
+            };
 
-                var request = new HttpRequestMessage()
-                {
-                    RequestUri = new Uri(url),
-                    Method = HttpMethod.Get
-                };
+            request.Headers.Add("Authorization", "Bearer " + _accessToken);
 
-                request.Headers.Add("Authorization", "Bearer " + _accessToken);
+            var responseMessage = await _httpClient.SendAsync(request);
+            var response = await responseMessage.Content.ReadAsStringAsync();
 
-                var responseMessage = await client.SendAsync(request);
-                var response = await responseMessage.Content.ReadAsStringAsync();
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jObject = JObject.Parse(response);
+                var jToken = jObject.GetValue(nodeName);
 
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var jObject = JObject.Parse(response);
-                    var jToken = jObject.GetValue(nodeName);
-
-                    var r = JsonConvert.DeserializeObject<T>(jToken.ToString());
-                    return r;
-                }
-
-                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
-                throw new ForceException(errorResponse.errorCode, errorResponse.message);
+                var r = JsonConvert.DeserializeObject<T>(jToken.ToString());
+                return r;
             }
+
+            var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
+            throw new ForceException(errorResponse.errorCode, errorResponse.message);
         }
 
         public async Task<T> HttpPost<T>(object inputObject, string urlSuffix)
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = _httpClient)
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
+
+            var json = JsonConvert.SerializeObject(inputObject, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var responseMessage = await _httpClient.PostAsync(url, content);
+            var response = await responseMessage.Content.ReadAsStringAsync();
+
+            if (responseMessage.IsSuccessStatusCode)
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
-
-                var json = JsonConvert.SerializeObject(inputObject, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                var responseMessage = await client.PostAsync(url, content);
-                var response = await responseMessage.Content.ReadAsStringAsync();
-
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    var r = JsonConvert.DeserializeObject<T>(response);
-                    return r;
-                }
-
-                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
-                throw new ForceException(errorResponse.message, errorResponse.errorCode);
+                var r = JsonConvert.DeserializeObject<T>(response);
+                return r;
             }
+
+            var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
+            throw new ForceException(errorResponse.message, errorResponse.errorCode);
         }
 
         public async Task<bool> HttpPatch(object inputObject, string urlSuffix)
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = _httpClient)
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
+
+            var request = new HttpRequestMessage()
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
+                RequestUri = new Uri(url),
+                Method = new HttpMethod("PATCH")
+            };
 
-                var request = new HttpRequestMessage()
-                {
-                    RequestUri = new Uri(url),
-                    Method = new HttpMethod("PATCH")
-                };
+            var json = JsonConvert.SerializeObject(inputObject);
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var json = JsonConvert.SerializeObject(inputObject);
-                request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var responseMessage = await _httpClient.SendAsync(request);
 
-                var responseMessage = await client.SendAsync(request);
-
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-
-                var response = await responseMessage.Content.ReadAsStringAsync();
-                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
-                throw new ForceException(errorResponse.error, errorResponse.error_description);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return true;
             }
+
+            var response = await responseMessage.Content.ReadAsStringAsync();
+            var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
+            throw new ForceException(errorResponse.error, errorResponse.error_description);
         }
+
         public async Task<bool> HttpDelete(string urlSuffix)
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = _httpClient)
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
+
+            var request = new HttpRequestMessage()
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
+                RequestUri = new Uri(url),
+                Method = HttpMethod.Delete
+            };
 
-                var request = new HttpRequestMessage()
-                {
-                    RequestUri = new Uri(url),
-                    Method = HttpMethod.Delete
-                };
+            var responseMessage = await _httpClient.SendAsync(request);
 
-                var responseMessage = await client.SendAsync(request);
-
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-
-                var response = await responseMessage.Content.ReadAsStringAsync();
-                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
-                throw new ForceException(errorResponse.error, errorResponse.error_description);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return true;
             }
+
+            var response = await responseMessage.Content.ReadAsStringAsync();
+            var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
+            throw new ForceException(errorResponse.error, errorResponse.error_description);
         }
     }
 }
