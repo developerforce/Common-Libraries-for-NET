@@ -11,37 +11,25 @@ namespace Salesforce.Common
 {
     public class ServiceHttpClient : IServiceHttpClient, IDisposable
     {
+        private static string _userAgent = "common-libraries-dotnet";
         private readonly string _instanceUrl;
         private readonly string _apiVersion;
-        private readonly string _userAgent = "common-libraries-dotnet";
         private readonly string _accessToken;
         private static HttpClient _httpClient;
 
         public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken)
+            : this(instanceUrl, apiVersion, accessToken, _userAgent, new HttpClient())
         {
-            _instanceUrl = instanceUrl;
-            _apiVersion = apiVersion;
-            _accessToken = accessToken;
-
-            _httpClient = new HttpClient();
-        }
-
-        public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, HttpClient httpClient)
-        {
-            _instanceUrl = instanceUrl;
-            _apiVersion = apiVersion;
-            _accessToken = accessToken;
-            _httpClient = httpClient;
         }
 
         public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, string userAgent)
+            : this(instanceUrl, apiVersion, accessToken, userAgent, new HttpClient())
         {
-            _instanceUrl = instanceUrl;
-            _apiVersion = apiVersion;
-            _accessToken = accessToken;
-            _userAgent = userAgent;
+        }
 
-            _httpClient = new HttpClient();
+        public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, HttpClient httpClient)
+            : this(instanceUrl, apiVersion, accessToken, _userAgent, httpClient)
+        {
         }
 
         public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, string userAgent, HttpClient httpClient)
