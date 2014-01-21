@@ -28,6 +28,16 @@ namespace Salesforce.Common
             _builder = () => new HttpClient();
         }
 
+        public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, HttpClient httpClient)
+        {
+            _instanceUrl = instanceUrl;
+            _apiVersion = apiVersion;
+            _accessToken = accessToken;
+            _userAgent = "common-libraries-dotnet";
+
+            _builder = () => httpClient;   
+        }
+
         public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, Func<HttpClient> builder )
         {
             _instanceUrl = instanceUrl;
@@ -46,6 +56,17 @@ namespace Salesforce.Common
             _userAgent = userAgent;
 
             _builder = () => new HttpClient();
+        }
+
+
+        public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, string userAgent, HttpClient httpClient)
+        {
+            _instanceUrl = instanceUrl;
+            _apiVersion = apiVersion;
+            _accessToken = accessToken;
+            _userAgent = userAgent;
+
+            _builder = () => httpClient;
         }
 
         public async Task<T> HttpGet<T>(string urlSuffix)

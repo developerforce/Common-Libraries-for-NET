@@ -5,12 +5,18 @@ using System.Text;
 
 namespace Salesforce.Common
 {
-    enum DisplayTypes
+    public enum DisplayTypes
     {
         Page,
         Popup,
         Touch,
         Mobile
+    }
+
+    public enum ResponseTypes
+    {
+        Code,
+        Token
     }
 
     public static class Common
@@ -22,16 +28,15 @@ namespace Salesforce.Common
 
         public static string FormatAuthUrl(
             string loginUrl,
-            string responseType,
+            ResponseTypes responseType,
             string clientId,
             string redirectUrl,
-            string display = "",
-            string immediate = "",
+            DisplayTypes display = DisplayTypes.Page,
+            bool immediate = false,
             string state = "",
             string scope = "")
         {
             if (loginUrl == null) throw new ArgumentNullException("loginUrl");
-            if (responseType == null) throw new ArgumentNullException("responseType");
             if (clientId == null) throw new ArgumentNullException("clientId");
             if (redirectUrl == null) throw new ArgumentNullException("redirectUrl");
 
@@ -39,11 +44,11 @@ namespace Salesforce.Common
             string.Format(
                 "{0}?response_type={1}&client_id={2}&redirect_uri={3}&display={4}&immediate={5}&state={6}&scope={7}",
                 loginUrl,
-                responseType,
+                responseType.ToString().ToLower(),
                 clientId,
                 redirectUrl,
-                display.ToLower(),
-                immediate,
+                display.ToString().ToLower(),
+                immediate.ToString(),
                 state,
                 scope);
 
