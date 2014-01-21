@@ -13,15 +13,9 @@ namespace Salesforce.Common.FunctionalTests
         private static string _username = ConfigurationSettings.AppSettings["Username"];
         private static string _password = ConfigurationSettings.AppSettings["Password"] + _securityToken;
 
-        [Test]
-        public async void Auth_ValidCreds_HasApiVersion()
-        {
-            var auth = new AuthenticationClient();
-            Assert.IsNotNullOrEmpty(auth.ApiVersion);
-        }
 
         [Test]
-        public async void Auth_ValidCreds_HasAccessToken()
+        public async void Auth_UsernamePassword_HasAccessToken()
         {
             const string userAgent = "common-libraries-dotnet";
 
@@ -32,7 +26,7 @@ namespace Salesforce.Common.FunctionalTests
         }
 
         [Test]
-        public async void Auth_ValidCreds_HasInstanceUrl()
+        public async void Auth_UsernamePassword_HasInstanceUrl()
         {
             const string userAgent = "common-libraries-dotnet";
 
