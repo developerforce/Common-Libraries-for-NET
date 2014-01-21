@@ -17,16 +17,6 @@ namespace Salesforce.Common
         private readonly string _accessToken;
         private static HttpClient _httpClient;
 
-        public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken)
-            : this(instanceUrl, apiVersion, accessToken, _userAgent, new HttpClient())
-        {
-        }
-
-        public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, string userAgent)
-            : this(instanceUrl, apiVersion, accessToken, userAgent, new HttpClient())
-        {
-        }
-
         public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, HttpClient httpClient)
             : this(instanceUrl, apiVersion, accessToken, _userAgent, httpClient)
         {
