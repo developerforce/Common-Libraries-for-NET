@@ -9,5 +9,6 @@ namespace Salesforce.Common
         Task<T> HttpPost<T>(object inputObject, string urlSuffix);
         Task<bool> HttpPatch(object inputObject, string urlSuffix);
         Task<bool> HttpDelete(string urlSuffix);
+        void Dispose();
     }
 }

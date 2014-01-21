@@ -13,7 +13,7 @@ namespace Salesforce.Common
     {
         private readonly string _instanceUrl;
         private readonly string _apiVersion;
-        private static string _userAgent = "common-libraries-dotnet";
+        private readonly string _userAgent = "common-libraries-dotnet";
         private readonly string _accessToken;
         private static HttpClient _httpClient;
 
