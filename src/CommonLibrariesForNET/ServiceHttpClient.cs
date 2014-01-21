@@ -13,19 +13,18 @@ namespace Salesforce.Common
     {
         private readonly string _instanceUrl;
         private readonly string _apiVersion;
-        private readonly string _userAgent;
+        private readonly string _userAgent = "common-libraries-dotnet";
         private readonly string _accessToken;
 
-        private readonly Func<HttpClient> _builder;
+        private readonly HttpClient _httpClient;
 
         public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken)
         {
             _instanceUrl = instanceUrl;
             _apiVersion = apiVersion;
             _accessToken = accessToken;
-            _userAgent = "common-libraries-dotnet";
 
-            _builder = () => new HttpClient();
+            _httpClient = new HttpClient();
         }
 
         public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, HttpClient httpClient)
@@ -33,19 +32,8 @@ namespace Salesforce.Common
             _instanceUrl = instanceUrl;
             _apiVersion = apiVersion;
             _accessToken = accessToken;
-            _userAgent = "common-libraries-dotnet";
 
-            _builder = () => httpClient;   
-        }
-
-        public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, Func<HttpClient> builder )
-        {
-            _instanceUrl = instanceUrl;
-            _apiVersion = apiVersion;
-            _accessToken = accessToken;
-            _userAgent = "common-libraries-dotnet";
-
-            _builder = builder;
+            _httpClient =  httpClient;   
         }
 
         public ServiceHttpClient(string instanceUrl, string apiVersion, string accessToken, string userAgent)
@@ -55,7 +43,7 @@ namespace Salesforce.Common
             _accessToken = accessToken;
             _userAgent = userAgent;
 
-            _builder = () => new HttpClient();
+            _httpClient = new HttpClient();
         }
 
 
@@ -65,15 +53,13 @@ namespace Salesforce.Common
             _apiVersion = apiVersion;
             _accessToken = accessToken;
             _userAgent = userAgent;
-
-            _builder = () => httpClient;
         }
 
         public async Task<T> HttpGet<T>(string urlSuffix)
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = _builder())
+            using (var client = _httpClient)
             {
                 client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
 
@@ -105,7 +91,7 @@ namespace Salesforce.Common
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = _builder())
+            using (var client = _httpClient)
             {
                 client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(_userAgent, "/", _apiVersion));
 
@@ -138,7 +124,7 @@ namespace Salesforce.Common
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = _builder())
+            using (var client = _httpClient)
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -165,7 +151,7 @@ namespace Salesforce.Common
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = _builder())
+            using (var client = _httpClient)
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -196,7 +182,7 @@ namespace Salesforce.Common
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            using (var client = _builder())
+            using (var client = _httpClient)
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
