@@ -52,8 +52,6 @@ namespace Salesforce.Common.FunctionalTests
                 Assert.IsNotNull(ex);
                 Assert.IsNotNull(ex.Message);
                 Assert.IsNotNull(ex.Error);
-
-                throw;
             }
 
         }
