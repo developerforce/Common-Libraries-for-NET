@@ -1,7 +1,5 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using NUnit.Framework;
-using Salesforce.Common;
 
 namespace Salesforce.Common.FunctionalTests
 {
@@ -53,7 +51,6 @@ namespace Salesforce.Common.FunctionalTests
                 Assert.IsNotNull(ex.Message);
                 Assert.IsNotNull(ex.Error);
             }
-
         }
     }
 }
