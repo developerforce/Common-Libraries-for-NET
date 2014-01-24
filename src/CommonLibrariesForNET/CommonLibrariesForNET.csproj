@@ -41,7 +41,9 @@
     <Compile Include="IAuthenticationClient.cs" />
     <Compile Include="IForceException.cs" />
     <Compile Include="IServiceClient.cs" />
+    <Compile Include="Models\AuthErrorResponse.cs" />
     <Compile Include="Models\AuthToken.cs" />
+    <Compile Include="Models\Error.cs" />
     <Compile Include="Models\ErrorResponse.cs" />
     <Compile Include="Models\SuccessResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

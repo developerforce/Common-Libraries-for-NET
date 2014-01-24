@@ -141,7 +141,7 @@ namespace Salesforce.Common
 
             var response = await responseMessage.Content.ReadAsStringAsync();
             var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
-            throw new ForceException(errorResponse.error, errorResponse.error_description);
+            throw new ForceException(errorResponse.message, errorResponse.errorCode);
         }
 
         public async Task<bool> HttpDelete(string urlSuffix)
@@ -166,7 +166,7 @@ namespace Salesforce.Common
 
             var response = await responseMessage.Content.ReadAsStringAsync();
             var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
-            throw new ForceException(errorResponse.error, errorResponse.error_description);
+            throw new ForceException(errorResponse.message, errorResponse.errorCode);
         }
     }
 }

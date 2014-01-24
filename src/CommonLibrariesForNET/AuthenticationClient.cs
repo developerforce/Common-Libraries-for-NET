@@ -69,7 +69,7 @@ namespace Salesforce.Common
             }
             else
             {
-                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
+                var errorResponse = JsonConvert.DeserializeObject<AuthErrorResponse>(response);
                 throw new ForceException(errorResponse.error, errorResponse.error_description);
             }
         }
@@ -116,7 +116,7 @@ namespace Salesforce.Common
             }
             else
             {
-                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
+                var errorResponse = JsonConvert.DeserializeObject<AuthErrorResponse>(response);
                 throw new ForceException(errorResponse.error, errorResponse.error_description);
             }
         }
