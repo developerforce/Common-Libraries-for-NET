@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -41,7 +42,7 @@ namespace Salesforce.Common
         public async Task<T> HttpGet<T>(string urlSuffix)
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
-            
+
             var request = new HttpRequestMessage()
             {
                 RequestUri = new Uri(url),
@@ -61,8 +62,8 @@ namespace Salesforce.Common
                 return r;
             }
 
-            var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
-            throw new ForceException(errorResponse.errorCode, errorResponse.message);
+            var errorResponse = JsonConvert.DeserializeObject<ErrorResponses>(response);
+            throw new ForceException(errorResponse[0].errorCode, errorResponse[0].message);
         }
 
         public async Task<T> HttpGet<T>(string urlSuffix, string nodeName)
@@ -89,8 +90,8 @@ namespace Salesforce.Common
                 return r;
             }
 
-            var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
-            throw new ForceException(errorResponse.errorCode, errorResponse.message);
+            var errorResponse = JsonConvert.DeserializeObject<ErrorResponses>(response);
+            throw new ForceException(errorResponse[0].errorCode, errorResponse[0].message);
         }
 
         public async Task<T> HttpPost<T>(object inputObject, string urlSuffix)
@@ -112,8 +113,8 @@ namespace Salesforce.Common
                 return r;
             }
 
-            var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
-            throw new ForceException(errorResponse.message, errorResponse.errorCode);
+            var errorResponse = JsonConvert.DeserializeObject<ErrorResponses>(response);
+            throw new ForceException(errorResponse[0].errorCode, errorResponse[0].message);
         }
 
         public async Task<bool> HttpPatch(object inputObject, string urlSuffix)
@@ -140,8 +141,9 @@ namespace Salesforce.Common
             }
 
             var response = await responseMessage.Content.ReadAsStringAsync();
-            var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
-            throw new ForceException(errorResponse.message, errorResponse.errorCode);
+      
+            var errorResponse = JsonConvert.DeserializeObject<ErrorResponses>(response);
+            throw new ForceException(errorResponse[0].errorCode, errorResponse[0].message);
         }
 
         public async Task<bool> HttpDelete(string urlSuffix)
@@ -165,8 +167,9 @@ namespace Salesforce.Common
             }
 
             var response = await responseMessage.Content.ReadAsStringAsync();
-            var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(response);
-            throw new ForceException(errorResponse.message, errorResponse.errorCode);
+
+            var errorResponse = JsonConvert.DeserializeObject<ErrorResponses>(response);
+            throw new ForceException(errorResponse[0].errorCode, errorResponse[0].message);
         }
     }
 }

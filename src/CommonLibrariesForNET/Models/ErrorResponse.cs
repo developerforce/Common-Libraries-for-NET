@@ -1,4 +1,5 @@
-﻿namespace Salesforce.Common.Models
+﻿
+namespace Salesforce.Common.Models
 {
     public class ErrorResponse
     {
