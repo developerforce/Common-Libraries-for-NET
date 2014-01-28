@@ -56,10 +56,21 @@ namespace Salesforce.Common
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                var jObject = JObject.Parse(response);
+                var jToken = JToken.Parse(response);
+                if (jToken.Type == JTokenType.Array)
+                {
+                    var jArray = JArray.Parse(response);
 
-                var r = JsonConvert.DeserializeObject<T>(jObject.ToString());
-                return r;
+                    var r = JsonConvert.DeserializeObject<T>(jArray.ToString());
+                    return r;
+                }
+                else
+                {
+                    var jObject = JObject.Parse(response);
+
+                    var r = JsonConvert.DeserializeObject<T>(jObject.ToString());
+                    return r;
+                }
             }
 
             var errorResponse = JsonConvert.DeserializeObject<ErrorResponses>(response);
