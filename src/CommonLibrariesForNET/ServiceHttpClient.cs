@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -103,6 +104,51 @@ namespace Salesforce.Common
 
             var errorResponse = JsonConvert.DeserializeObject<ErrorResponses>(response);
             throw new ForceException(errorResponse[0].errorCode, errorResponse[0].message);
+        }
+
+        public async Task<IList<T>> HttpGetMoreAsync<T>(string urlSuffix, string nodeName)
+        {
+            string next = null;
+            string response = null;
+            var records = new List<T>();
+
+            var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
+
+            try
+            {
+                do
+                {
+                    if (next != null)
+                        url = Common.FormatUrl(string.Format("query/{0}", next.Split('/').Last()), _instanceUrl, _apiVersion);
+
+                    var request = new HttpRequestMessage()
+                    {
+                        RequestUri = new Uri(url),
+                        Method = HttpMethod.Get
+                    };
+
+                    request.Headers.Add("Authorization", "Bearer " + _accessToken);
+
+                    var responseMessage = await _httpClient.SendAsync(request);
+                    response = await responseMessage.Content.ReadAsStringAsync();
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var jObject = JObject.Parse(response);
+                        var jToken = jObject.GetValue(nodeName);
+
+                        next = (jObject.GetValue("nextRecordsUrl") != null) ? jObject.GetValue("nextRecordsUrl").ToString() : null;
+                        records.AddRange(JsonConvert.DeserializeObject<IList<T>>(jToken.ToString()));
+                    }
+                } while (!string.IsNullOrEmpty(next));
+
+                return (IList<T>)records;
+            }
+            catch (Exception)
+            {
+                var errorResponse = JsonConvert.DeserializeObject<ErrorResponses>(response);
+                throw new ForceException(errorResponse[0].errorCode, errorResponse[0].message);
+            }
         }
 
         public async Task<T> HttpPostAsync<T>(object inputObject, string urlSuffix)
