@@ -30,7 +30,7 @@ namespace Salesforce.Common.UnitTests
 
             using (var auth = new AuthenticationClient(client))
             {
-                await auth.UsernamePassword(consumerKey, consumerSecret, username, password, userAgent);
+                await auth.UsernamePasswordAysnc(consumerKey, consumerSecret, username, password, userAgent);
 
                 Assert.IsNotNull(auth.AccessToken);
                 Assert.IsNotNull(auth.ApiVersion);

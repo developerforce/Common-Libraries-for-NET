@@ -27,17 +27,17 @@ namespace Salesforce.Common
             ApiVersion = "v29.0";
         }
 
-        public async Task UsernamePassword(string clientId, string clientSecret, string username, string password)
+        public async Task UsernamePasswordAysnc(string clientId, string clientSecret, string username, string password)
         {
-            await UsernamePassword(clientId, clientSecret, username, password, UserAgent, TokenRequestEndpointUrl);
+            await UsernamePasswordAysnc(clientId, clientSecret, username, password, UserAgent, TokenRequestEndpointUrl);
         }
 
-        public async Task UsernamePassword(string clientId, string clientSecret, string username, string password, string userAgent)
+        public async Task UsernamePasswordAysnc(string clientId, string clientSecret, string username, string password, string userAgent)
         {
-            await UsernamePassword(clientId, clientSecret, username, password, userAgent, TokenRequestEndpointUrl);
+            await UsernamePasswordAysnc(clientId, clientSecret, username, password, userAgent, TokenRequestEndpointUrl);
         }
 
-        public async Task UsernamePassword(string clientId, string clientSecret, string username, string password, string userAgent, string tokenRequestEndpointUrl)
+        public async Task UsernamePasswordAysnc(string clientId, string clientSecret, string username, string password, string userAgent, string tokenRequestEndpointUrl)
         {
             _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(userAgent, "/", ApiVersion));
 
@@ -74,17 +74,17 @@ namespace Salesforce.Common
             }
         }
 
-        public async Task WebServer(string clientId, string clientSecret, string redirectUri, string code)
+        public async Task WebServerAysnc(string clientId, string clientSecret, string redirectUri, string code)
         {
-            await WebServer(clientId, clientSecret, redirectUri, code, UserAgent, TokenRequestEndpointUrl);
+            await WebServerAysnc(clientId, clientSecret, redirectUri, code, UserAgent, TokenRequestEndpointUrl);
         }
 
-        public async Task WebServer(string clientId, string clientSecret, string redirectUri, string code, string userAgent)
+        public async Task WebServerAysnc(string clientId, string clientSecret, string redirectUri, string code, string userAgent)
         {
-            await WebServer(clientId, clientSecret, redirectUri, code, userAgent, TokenRequestEndpointUrl);
+            await WebServerAysnc(clientId, clientSecret, redirectUri, code, userAgent, TokenRequestEndpointUrl);
         }
 
-        public async Task WebServer(string clientId, string clientSecret, string redirectUri, string code, string userAgent, string tokenRequestEndpointUrl)
+        public async Task WebServerAysnc(string clientId, string clientSecret, string redirectUri, string code, string userAgent, string tokenRequestEndpointUrl)
         {
             _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(userAgent, "/", ApiVersion));
 
