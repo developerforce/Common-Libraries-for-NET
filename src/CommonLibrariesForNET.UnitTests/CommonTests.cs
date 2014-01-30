@@ -57,7 +57,7 @@ namespace Salesforce.Common.UnitTests
 
             using (var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client))
             {
-                await httpClient.HttpGet<object>("wade");
+                await httpClient.HttpGetAsync<object>("wade");
             }
         }
 
@@ -77,7 +77,7 @@ namespace Salesforce.Common.UnitTests
 
             using (var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client))
             {
-                await httpClient.HttpGet<object>("wade", "node");
+                await httpClient.HttpGetAsync<object>("wade", "node");
             }
         }
 
@@ -97,7 +97,7 @@ namespace Salesforce.Common.UnitTests
 
             using (var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client))
             {
-                await httpClient.HttpPost<object>(null, "wade");
+                await httpClient.HttpPostAsync<object>(null, "wade");
             }
         }
 
@@ -117,7 +117,7 @@ namespace Salesforce.Common.UnitTests
 
             using (var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client))
             {
-                await httpClient.HttpPatch(null, "wade");
+                await httpClient.HttpPatchAsync(null, "wade");
             }
         }
 
@@ -137,7 +137,7 @@ namespace Salesforce.Common.UnitTests
 
             using (var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client))
             {
-                await httpClient.HttpDelete("wade");
+                await httpClient.HttpDeleteAsync("wade");
             }
         }
 
@@ -154,7 +154,7 @@ namespace Salesforce.Common.UnitTests
 
             using (var httpClient = new ServiceHttpClient("http://localhost:1899", "v29", "accessToken", client))
             {
-                await httpClient.HttpGet<object>("wade", "node");
+                await httpClient.HttpGetAsync<object>("wade", "node");
             }
         }
     }
