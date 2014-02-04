@@ -12,12 +12,12 @@ namespace Salesforce.Common
         string InstanceUrl { get; set; }
         string AccessToken { get; set; }
         string ApiVersion { get; set; }
-        Task UsernamePasswordAysnc(string clientId, string clientSecret, string username, string password);
-        Task UsernamePasswordAysnc(string clientId, string clientSecret, string username, string password, string userAgent);
-        Task UsernamePasswordAysnc(string clientId, string clientSecret, string username, string password, string userAgent, string tokenRequestEndpointUrl);
-        Task WebServerAysnc(string clientId, string clientSecret, string redirectUri, string code);
-        Task WebServerAysnc(string clientId, string clientSecret, string redirectUri, string code, string userAgent);
-        Task WebServerAysnc(string clientId, string clientSecret, string redirectUri, string code, string userAgent, string tokenRequestEndpointUrl);
+        Task UsernamePasswordAsync(string clientId, string clientSecret, string username, string password);
+        Task UsernamePasswordAsync(string clientId, string clientSecret, string username, string password, string userAgent);
+        Task UsernamePasswordAsync(string clientId, string clientSecret, string username, string password, string userAgent, string tokenRequestEndpointUrl);
+        Task WebServerAsync(string clientId, string clientSecret, string redirectUri, string code);
+        Task WebServerAsync(string clientId, string clientSecret, string redirectUri, string code, string userAgent);
+        Task WebServerAsync(string clientId, string clientSecret, string redirectUri, string code, string userAgent, string tokenRequestEndpointUrl);
         void Dispose();
     }
 }

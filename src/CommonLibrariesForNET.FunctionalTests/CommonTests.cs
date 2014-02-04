@@ -22,7 +22,7 @@ namespace Salesforce.Common.FunctionalTests
             const string userAgent = "common-libraries-dotnet";
 
             var auth = new AuthenticationClient();
-            await auth.UsernamePasswordAysnc(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
+            await auth.UsernamePasswordAsync(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
 
             Assert.IsNotNullOrEmpty(auth.AccessToken);
         }
@@ -33,7 +33,7 @@ namespace Salesforce.Common.FunctionalTests
             const string userAgent = "common-libraries-dotnet";
 
             var auth = new AuthenticationClient();
-            await auth.UsernamePasswordAysnc(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
+            await auth.UsernamePasswordAsync(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
 
             Assert.IsNotNullOrEmpty(auth.InstanceUrl);
         }
@@ -46,7 +46,7 @@ namespace Salesforce.Common.FunctionalTests
             try
             {
                 var auth = new AuthenticationClient();
-                await auth.UsernamePasswordAysnc(_consumerKey, _consumerSecret, _username, "WRONGPASSWORD", userAgent, _tokenRequestEndpointUrl);
+                await auth.UsernamePasswordAsync(_consumerKey, _consumerSecret, _username, "WRONGPASSWORD", userAgent, _tokenRequestEndpointUrl);
             }
             catch (ForceException ex)
             {
