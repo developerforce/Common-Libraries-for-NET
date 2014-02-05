@@ -121,6 +121,49 @@ namespace Salesforce.Common
             }
         }
 
+        public async Task TokenRefreshAsync(string clientId, string refreshToken, string clientSecret = "")
+        {
+            await TokenRefreshAsync(clientId, refreshToken, clientSecret, UserAgent, TokenRequestEndpointUrl);
+        }
+
+        public async Task TokenRefreshAsync(string clientId, string refreshToken, string clientSecret, string userAgent)
+        {
+            await TokenRefreshAsync(clientId, refreshToken, clientSecret, userAgent, TokenRequestEndpointUrl);
+        }
+
+        public async Task TokenRefreshAsync(string clientId, string refreshToken, string clientSecret, string userAgent, string tokenRequestEndpointUrl)
+        {
+            _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(userAgent, "/", ApiVersion));
+
+            var url = Common.FormatRefreshTokenUrl(
+                tokenRequestEndpointUrl,
+                clientId,
+                refreshToken,
+                clientSecret);
+
+            var request = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(url)
+            };
+
+            var responseMessage = await _httpClient.SendAsync(request);
+            var response = await responseMessage.Content.ReadAsStringAsync();
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var authToken = JsonConvert.DeserializeObject<AuthToken>(response);
+
+                AccessToken = authToken.access_token;
+                InstanceUrl = authToken.instance_url;
+            }
+            else
+            {
+                var errorResponse = JsonConvert.DeserializeObject<AuthErrorResponse>(response);
+                throw new ForceException(errorResponse.error, errorResponse.error_description);
+            }
+        }
+
         public void Dispose()
         {
             _httpClient.Dispose();
