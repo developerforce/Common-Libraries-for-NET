@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿//TODO: add license header
+
+using System;
+using Salesforce.Common.Models;
 
 namespace Salesforce.Common
 {
-    public enum DisplayTypes
-    {
-        Page,
-        Popup,
-        Touch,
-        Mobile
-    }
-
-    public enum ResponseTypes
-    {
-        Code,
-        Token
-    }
-
     public static class Common
     {
         public static string FormatUrl(string resourceName, string instanceUrl, string apiVersion)
         {
+            if (string.IsNullOrEmpty(resourceName)) throw new ArgumentNullException("resourceName");
+            if (string.IsNullOrEmpty(instanceUrl)) throw new ArgumentNullException("instanceUrl");
+            if (string.IsNullOrEmpty(apiVersion)) throw new ArgumentNullException("apiVersion");
+            
             return string.Format("{0}/services/data/{1}/{2}", instanceUrl, apiVersion, resourceName);
         }
 
@@ -36,9 +26,10 @@ namespace Salesforce.Common
             string state = "",
             string scope = "")
         {
-            if (loginUrl == null) throw new ArgumentNullException("loginUrl");
-            if (clientId == null) throw new ArgumentNullException("clientId");
-            if (redirectUrl == null) throw new ArgumentNullException("redirectUrl");
+            if (string.IsNullOrEmpty(loginUrl)) throw new ArgumentNullException("loginUrl");
+            if (string.IsNullOrEmpty(clientId)) throw new ArgumentNullException("clientId");
+            if (string.IsNullOrEmpty(redirectUrl)) throw new ArgumentNullException("redirectUrl");
+            //TODO: check ensure that redirectUrl is a valid URI
 
             var url =
             string.Format(
@@ -48,7 +39,7 @@ namespace Salesforce.Common
                 clientId,
                 redirectUrl,
                 display.ToString().ToLower(),
-                immediate.ToString(),
+                immediate,
                 state,
                 scope);
 

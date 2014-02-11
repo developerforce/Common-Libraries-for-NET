@@ -1,4 +1,6 @@
-﻿using System;
+﻿//TODO: add license header
+
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -23,6 +25,8 @@ namespace Salesforce.Common
 
         public AuthenticationClient(HttpClient httpClient)
         {
+            if (httpClient == null) throw new ArgumentNullException("httpClient");
+
             _httpClient = httpClient;
             ApiVersion = "v29.0";
         }
@@ -39,6 +43,15 @@ namespace Salesforce.Common
 
         public async Task UsernamePassword(string clientId, string clientSecret, string username, string password, string userAgent, string tokenRequestEndpointUrl)
         {
+            if (string.IsNullOrEmpty(clientId)) throw new ArgumentNullException("clientId");
+            if (string.IsNullOrEmpty(clientSecret)) throw new ArgumentNullException("clientSecret");
+            if (string.IsNullOrEmpty(username)) throw new ArgumentNullException("username");
+            if (string.IsNullOrEmpty(password)) throw new ArgumentNullException("password");
+            if (string.IsNullOrEmpty(userAgent)) throw new ArgumentNullException("userAgent");
+            if (string.IsNullOrEmpty(tokenRequestEndpointUrl)) throw new ArgumentNullException("tokenRequestEndpointUrl");
+            //TODO: check to make sure tokenRequestEndpointUrl is a valid URI
+
+            //TODO: refactor use newer technique
             _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(userAgent, "/", ApiVersion));
 
             var content = new FormUrlEncodedContent(new[]
@@ -70,7 +83,7 @@ namespace Salesforce.Common
             else
             {
                 var errorResponse = JsonConvert.DeserializeObject<AuthErrorResponse>(response);
-                throw new ForceException(errorResponse.error, errorResponse.error_description);
+                throw new ForceAuthException(errorResponse.error, errorResponse.error_description);
             }
         }
 
@@ -86,6 +99,16 @@ namespace Salesforce.Common
 
         public async Task WebServer(string clientId, string clientSecret, string redirectUri, string code, string userAgent, string tokenRequestEndpointUrl)
         {
+            if (string.IsNullOrEmpty(clientId)) throw new ArgumentNullException("clientId");
+            if (string.IsNullOrEmpty(clientSecret)) throw new ArgumentNullException("clientSecret");
+            if (string.IsNullOrEmpty(redirectUri)) throw new ArgumentNullException("redirectUri");
+            //TODO: check to make sure redirectUri is a valid URI
+            if (string.IsNullOrEmpty(code)) throw new ArgumentNullException("code");
+            if (string.IsNullOrEmpty(userAgent)) throw new ArgumentNullException("userAgent");
+            if (string.IsNullOrEmpty(tokenRequestEndpointUrl)) throw new ArgumentNullException("tokenRequestEndpointUrl");
+            //TODO: check to make sure tokenRequestEndpointUrl is a valid URI
+
+            //TODO: refactor to use newer technique
             _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(string.Concat(userAgent, "/", ApiVersion));
 
             var content = new FormUrlEncodedContent(new[]
@@ -117,12 +140,13 @@ namespace Salesforce.Common
             else
             {
                 var errorResponse = JsonConvert.DeserializeObject<AuthErrorResponse>(response);
-                throw new ForceException(errorResponse.error, errorResponse.error_description);
+                throw new ForceAuthException(errorResponse.error, errorResponse.error_description);
             }
         }
 
         public void Dispose()
         {
+            //TODO: catch in case this has already been disposed or deallocated?
             _httpClient.Dispose();
         }
     }

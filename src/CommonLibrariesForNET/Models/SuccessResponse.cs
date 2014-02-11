@@ -1,4 +1,7 @@
-﻿namespace Salesforce.Common.Models
+﻿//TODO: add license header
+//TODO: refactor casing?
+
+namespace Salesforce.Common.Models
 {
     public class SuccessResponse
     {

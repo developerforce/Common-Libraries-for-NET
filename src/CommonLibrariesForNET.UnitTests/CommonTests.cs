@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿//TODO: add license header
+
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using NUnit.Framework;
 

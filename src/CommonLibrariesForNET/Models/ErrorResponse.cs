@@ -1,4 +1,6 @@
-﻿
+﻿//TODO: add license header
+//TODO: refactor casing?
+
 namespace Salesforce.Common.Models
 {
     public class ErrorResponse
