@@ -19,6 +19,22 @@ namespace Salesforce.Common.FunctionalTests
 
 
         [Test]
+        public async void Query_Describe()
+        {
+            const string userAgent = "common-libraries-dotnet";
+
+            var auth = new AuthenticationClient();
+            await auth.UsernamePasswordAsync(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
+
+            var serviceHttpClient = new ServiceHttpClient(auth.InstanceUrl, auth.ApiVersion, auth.AccessToken, userAgent, new HttpClient());
+            var objectName = "Account";
+            var response = await serviceHttpClient.HttpGetAsync<dynamic>(string.Format("sobjects/{0}", objectName));
+            
+            Assert.IsNotNull(response);
+
+        }
+
+        [Test]
         public async void Query_Objects()
         {
             const string userAgent = "common-libraries-dotnet";
