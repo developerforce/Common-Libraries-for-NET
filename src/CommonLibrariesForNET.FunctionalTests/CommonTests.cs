@@ -1,5 +1,10 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Net.Http;
+using System.Web;
 using NUnit.Framework;
+using Salesforce.Common.Models;
 
 namespace Salesforce.Common.FunctionalTests
 {
@@ -12,6 +17,39 @@ namespace Salesforce.Common.FunctionalTests
         private static string _username = ConfigurationSettings.AppSettings["Username"];
         private static string _password = ConfigurationSettings.AppSettings["Password"] + _securityToken;
 
+        [Test]
+        public async void Query_Select_Account()
+        {
+            const string userAgent = "common-libraries-dotnet";
+
+            var auth = new AuthenticationClient();
+            await auth.UsernamePasswordAsync(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
+
+            var serviceHttpClient = new ServiceHttpClient(auth.InstanceUrl, auth.ApiVersion, auth.AccessToken, userAgent, new HttpClient());
+
+            var query = "SELECT id FROM Account";
+            var response = await serviceHttpClient.HttpGetAsync<QueryResult<dynamic>>(string.Format("query?q={0}", query));
+
+            Assert.IsTrue(response.totalSize > 0);
+            Assert.IsTrue(response.records.Count > 0);
+        }
+
+        [Test]
+        public async void Count()
+        {
+            const string userAgent = "common-libraries-dotnet";
+
+            var auth = new AuthenticationClient();
+            await auth.UsernamePasswordAsync(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
+
+            var serviceHttpClient = new ServiceHttpClient(auth.InstanceUrl, auth.ApiVersion, auth.AccessToken, userAgent, new HttpClient());
+
+            var query = "SELECT count() FROM Account";
+            var response = await serviceHttpClient.HttpGetAsync<QueryResult<dynamic>>(string.Format("query?q={0}", query));
+
+            Assert.IsTrue(response.totalSize > 0);
+            Assert.IsTrue(response.records.Count == 0);
+        }
 
         [Test]
         public async void Auth_UsernamePassword_HasAccessToken()
@@ -19,7 +57,7 @@ namespace Salesforce.Common.FunctionalTests
             const string userAgent = "common-libraries-dotnet";
 
             var auth = new AuthenticationClient();
-            await auth.UsernamePassword(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
+            await auth.UsernamePasswordAsync(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
 
             Assert.IsNotNullOrEmpty(auth.AccessToken);
         }
@@ -30,7 +68,7 @@ namespace Salesforce.Common.FunctionalTests
             const string userAgent = "common-libraries-dotnet";
 
             var auth = new AuthenticationClient();
-            await auth.UsernamePassword(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
+            await auth.UsernamePasswordAsync(_consumerKey, _consumerSecret, _username, _password, userAgent, _tokenRequestEndpointUrl);
 
             Assert.IsNotNullOrEmpty(auth.InstanceUrl);
         }
@@ -43,14 +81,15 @@ namespace Salesforce.Common.FunctionalTests
             try
             {
                 var auth = new AuthenticationClient();
-                await auth.UsernamePassword(_consumerKey, _consumerSecret, _username, "WRONGPASSWORD", userAgent, _tokenRequestEndpointUrl);
+                await auth.UsernamePasswordAsync(_consumerKey, _consumerSecret, _username, "WRONGPASSWORD", userAgent, _tokenRequestEndpointUrl);
             }
-            catch (ForceException ex)
+            catch (ForceAuthException ex)
             {
                 Assert.IsNotNull(ex);
                 Assert.IsNotNull(ex.Message);
                 Assert.IsNotNull(ex.Error);
             }
         }
+
     }
 }

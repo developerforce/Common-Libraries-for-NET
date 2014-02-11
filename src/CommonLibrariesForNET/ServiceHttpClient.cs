@@ -1,4 +1,4 @@
-﻿//TODO: add license header
+﻿﻿//TODO: add license header
 
 using System;
 using System.Net.Http;
@@ -40,7 +40,7 @@ namespace Salesforce.Common
             _httpClient.Dispose();
         }
 
-        public async Task<T> HttpGet<T>(string urlSuffix)
+        public async Task<T> HttpGetAsync<T>(string urlSuffix)
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
@@ -78,35 +78,35 @@ namespace Salesforce.Common
             throw new ForceException(errorResponse[0].errorCode, errorResponse[0].message);
         }
 
-        public async Task<T> HttpGet<T>(string urlSuffix, string nodeName)
-        {
-            var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
+        //public async Task<T> HttpGetAsync<T>(string urlSuffix, string nodeName)
+        //{
+        //    var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
-            var request = new HttpRequestMessage()
-            {
-                RequestUri = new Uri(url),
-                Method = HttpMethod.Get
-            };
+        //    var request = new HttpRequestMessage()
+        //    {
+        //        RequestUri = new Uri(url),
+        //        Method = HttpMethod.Get
+        //    };
 
-            request.Headers.Add("Authorization", "Bearer " + _accessToken);
+        //    request.Headers.Add("Authorization", "Bearer " + _accessToken);
 
-            var responseMessage = await _httpClient.SendAsync(request);
-            var response = await responseMessage.Content.ReadAsStringAsync();
+        //    var responseMessage = await _httpClient.SendAsync(request);
+        //    var response = await responseMessage.Content.ReadAsStringAsync();
 
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jObject = JObject.Parse(response);
-                var jToken = jObject.GetValue(nodeName);
+        //    if (responseMessage.IsSuccessStatusCode)
+        //    {
+        //        var jObject = JObject.Parse(response);
+        //        var jToken = jObject.GetValue(nodeName);
 
-                var r = JsonConvert.DeserializeObject<T>(jToken.ToString());
-                return r;
-            }
+        //        var r = JsonConvert.DeserializeObject<T>(jToken.ToString());
+        //        return r;
+        //    }
 
-            var errorResponse = JsonConvert.DeserializeObject<ErrorResponses>(response);
-            throw new ForceException(errorResponse[0].errorCode, errorResponse[0].message);
-        }
+        //    var errorResponse = JsonConvert.DeserializeObject<ErrorResponses>(response);
+        //    throw new ForceException(errorResponse[0].errorCode, errorResponse[0].message);
+        //}
 
-        public async Task<T> HttpPost<T>(object inputObject, string urlSuffix)
+        public async Task<T> HttpPostAsync<T>(object inputObject, string urlSuffix)
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
@@ -129,7 +129,7 @@ namespace Salesforce.Common
             throw new ForceException(errorResponse[0].errorCode, errorResponse[0].message);
         }
 
-        public async Task<bool> HttpPatch(object inputObject, string urlSuffix)
+        public async Task<bool> HttpPatchAsync(object inputObject, string urlSuffix)
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 
@@ -158,7 +158,7 @@ namespace Salesforce.Common
             throw new ForceException(errorResponse[0].errorCode, errorResponse[0].message);
         }
 
-        public async Task<bool> HttpDelete(string urlSuffix)
+        public async Task<bool> HttpDeleteAsync(string urlSuffix)
         {
             var url = Common.FormatUrl(urlSuffix, _instanceUrl, _apiVersion);
 

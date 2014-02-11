@@ -45,5 +45,32 @@ namespace Salesforce.Common
 
             return url;
         }
+
+        public static string FormatRefreshTokenUrl(
+            string tokenRefreshUrl,
+            string clientId,
+            string refreshToken,
+            string clientSecret = "")
+        {
+            if (tokenRefreshUrl == null) throw new ArgumentNullException("tokenRefreshUrl");
+            if (clientId == null) throw new ArgumentNullException("clientId");
+            if (refreshToken == null) throw new ArgumentNullException("refreshToken");
+
+            var clientSecretQuerystring = "";
+            if (!string.IsNullOrEmpty(clientSecret))
+            {
+                clientSecretQuerystring = string.Format("&client_secret={0}", clientSecret);
+            }
+
+            var url =
+            string.Format(
+                "{0}?grant_type=refresh_token&client_id={1}{2}&refresh_token={3}",
+                tokenRefreshUrl,
+                clientId,
+                clientSecretQuerystring,
+                refreshToken);
+
+            return url;
+        }
     }
 }
