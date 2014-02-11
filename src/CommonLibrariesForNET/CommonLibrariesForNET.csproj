@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="AuthenticationClient.cs" />
     <Compile Include="Common.cs" />
+    <Compile Include="Models\DescribeGlobalResult.cs" />
     <Compile Include="Models\DisplayTypes.cs" />
     <Compile Include="ForceAuthException.cs" />
     <Compile Include="ForceException.cs" />
