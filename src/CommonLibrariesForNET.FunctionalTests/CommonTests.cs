@@ -35,7 +35,7 @@ namespace Salesforce.Common.FunctionalTests
         }
 
         [Test]
-        public async void Count()
+        public async void Query_Select_Count()
         {
             const string userAgent = "common-libraries-dotnet";
 
