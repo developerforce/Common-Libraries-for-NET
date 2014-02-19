@@ -13,6 +13,7 @@ namespace Salesforce.Common
     {
         public string InstanceUrl { get; set; }
         public string AccessToken { get; set; }
+        public string Id { get; set; }
         public string ApiVersion { get; set; }
         private const string UserAgent = "common-libraries-dotnet";
         private const string TokenRequestEndpointUrl = "https://login.salesforce.com/services/oauth2/token";
@@ -79,6 +80,7 @@ namespace Salesforce.Common
 
                 AccessToken = authToken.access_token;
                 InstanceUrl = authToken.instance_url;
+                Id = authToken.id;
             }
             else
             {
@@ -136,6 +138,7 @@ namespace Salesforce.Common
 
                 AccessToken = authToken.access_token;
                 InstanceUrl = authToken.instance_url;
+                Id = authToken.id;
             }
             else
             {
@@ -179,6 +182,7 @@ namespace Salesforce.Common
 
                 AccessToken = authToken.access_token;
                 InstanceUrl = authToken.instance_url;
+                Id = authToken.id;
             }
             else
             {
